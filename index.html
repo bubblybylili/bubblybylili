@@ -1,72 +1,324 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Phoenix editor</title>
-        <link rel="stylesheet" href="styles.css" />
-        <script src="script.js"></script>
-    </head>
+html_content = """<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burbujas Mágicas - Globos Burbuja Personalizados</title>
+    <style>
+        :root {
+            --pastel-pink: #ffd1dc;
+            --pastel-blue: #d0f0fd;
+            --pastel-yellow: #fdfd96;
+            --pastel-purple: #e2d9f3;
+            --pastel-green: #d1f7c4;
+            --bg-color: #faf7f9;
+            --text-color: #5a5560;
+            --accent-color: #ff9aa2;
+            --white: #ffffff;
+        }
 
-    <body onload="onPageLoaded()">
-        <img id="starsLeft" alt="stars" src="images/stars-left.svg" />
-        <div id="mainDiv">
-            <img id="logo" alt="logo" src="images/phoenix-logo.svg" />
-            <div id="MainText">
-                <h1>Phoenix Code</h1>
-                <span>Haga clic aquí para ubicar esto &lt;span&gt; en el archivo HTML<br /></span><br />
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--pastel-pink), var(--pastel-blue));
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 4px dashed var(--white);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #4a4550;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #6a6270;
+        }
+
+        nav {
+            background-color: var(--white);
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #4a4550;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--pastel-pink);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Carousel Styles */
+        .carousel-container {
+            position: relative;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            overflow: hidden;
+            margin-bottom: 50px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255,209,220,0.2), rgba(208,240,253,0.2));
+        }
+
+        .carousel-slide img {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 6px solid var(--white);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .carousel-slide h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #4a4550;
+        }
+
+        .carousel-slide p {
+            color: #7a7280;
+            max-width: 500px;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--white);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s, transform 0.2s;
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background-color: var(--pastel-pink);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .prev-btn {
+            left: 20px;
+        }
+
+        .next-btn {
+            right: 20px;
+        }
+
+        /* Features / Services */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            text-align: center;
+            border-top: 5px solid var(--pastel-purple);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:nth-child(2) {
+            border-top-color: var(--pastel-yellow);
+        }
+
+        .feature-card:nth-child(3) {
+            border-top-color: var(--pastel-green);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: #4a4550;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--pastel-purple), var(--pastel-pink));
+            text-align: center;
+            padding: 30px;
+            color: #5a5560;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media(max-width: 600px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .carousel-slide img {
+                width: 180px;
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>✨ Bubble by Lili ✨</h1>
+        <p>Globos burbuja personalizados para hacer inolvidables tus momentos especiales</p>
+    </header>
+
+    <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#galeria">Trabajos Realizados</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div class="container" id="galeria">
+        <h2 class="section-title">Nuestras Creaciones</h2>
+
+        <!-- Carrusel Sencillo -->
+        <div class="carousel-container">
+            <button class="carousel-btn prev-btn" onclick="moveSlide(-1)">&#10094;</button>
+            
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Slide 1 -->
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500&auto=format&fit=crop&q=80" alt="Globo Cumpleaños">
+                    <h3>Cumpleaños Encantado</h3>
+                    <p>Globo burbuja transparente con confeti dorado, plumas suaves y texto personalizado para celebrar un día muy especial.</p>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500&auto=format&fit=crop&q=80" alt="Globo Amor">
+                    <h3>Amor y Aniversarios</h3>
+                    <p>Diseño romántico con rosas eternas en el interior, luces LED delicadas y una base decorada con globos pastel.</p>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500&auto=format&fit=crop&q=80" alt="Globo Baby Shower">
+                    <h3>Baby Shower Pastel</h3>
+                    <p>Tonos celestes y rosas suaves con globos mini internos, perfecto para dar la bienvenida al nuevo integrante de la familia.</p>
+                </div>
             </div>
-            <div class="video-container">
-                <a
-                    href="https://www.youtube.com/@phoenixcodeeditor3764"
-                    target="_blank"
-                    title="Phoenix YouTube Channel"
-                    class="phcode-no-lp-edit">
-                    <img
-                        src="images/youtube_video.png"
-                        alt="Phoenix Code on YouTube"
-                        title="Phoenix Code on YouTube"
-                        style="max-width: 320px" />
-                </a>
-                <img src="images/play.svg" class="play-button phcode-no-lp-edit" style="width: 64px;" alt="play">
+
+            <button class="carousel-btn next-btn" onclick="moveSlide(1)">&#10095;</button>
+        </div>
+
+        <h2 class="section-title" style="margin-top: 60px;">¿Por qué elegirnos?</h2>
+        
+        <div class="features">
+            <div class="feature-card">
+                <h3>Personalización Total</h3>
+                <p>Agrega nombres, fechas o mensajes especiales con vinil de alta calidad y los colores que elijas.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Durabilidad Superior</h3>
+                <p>Nuestros globos burbuja están hechos de material resistente que dura días manteniendo su forma perfecta.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Detalles Únicos</h3>
+                <p>Acompañados de plumas, confeti, luces LED o mini globos para crear un efecto visual mágico e inolvidable.</p>
             </div>
         </div>
-        <img id="cloudLeftTop" alt="cloud" src="images/vector-top-left.png" />
-        <img id="cloudBottomRight" alt="cloud" src="images/vector-bottom-right.png" />
-        <img id="starsRight" alt="stars" src="images/stars-right.svg" />
-        <img
-            class="clouds"
-            alt="cloud"
-            style="z-index: 3; transform: translate(0px, -1.55909px)"
-            src="images/cloud1.svg" />
-        <img
-            class="clouds"
-            alt="cloud"
-            style="z-index: 6; transform: translate(0px, -2.33863px)"
-            src="images/cloud2.svg" />
-        <img
-            class="clouds"
-            alt="cloud"
-            style="z-index: 5; transform: translate(0px, -3.89772px)"
-            src="images/cloud3.svg" />
-        <img
-            class="clouds"
-            alt="cloud"
-            style="z-index: 6; transform: translate(0px, -3.89772px)"
-            src="images/cloud4.svg" />
-        <div class="night">
-            <div class="shooting_star">
-                <div class="shooting_star" />
-            </div>
-        </div>
-        <div class="night">
-            <div class="shooting_star">
-                <div class="shooting_star" />
-            </div>
-        </div>
-        <div class="night">
-            <div class="shooting_star">
-                <div class="shooting_star" />
-            </div>
-        </div>
-    </body>
+    </div>
+
+    <footer id="contacto">
+        <p>🌸 Contáctanos para tu próximo evento 🌸</p>
+        <p style="margin-top: 10px; font-size: 0.9rem;">WhatsApp: +52 33 1234 5678 | Instagram: @Bubblybylili</p>
+    </footer>
+
+    <script>
+        let currentSlide = 0;
+        const track = document.getElementById('carouselTrack');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const totalSlides = slides.length;
+
+        function moveSlide(direction) {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        // Auto-play opcional cada 5 segundos
+        setInterval(() => {
+            moveSlide(1);
+        }, 5000);
+    </script>
+
+</body>
 </html>
+"""
+
+with open("globos_burbuja.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
